@@ -1,7 +1,7 @@
 # Harbor
 
 [![Build Status](https://travis-ci.org/vmware/harbor.svg?branch=master)](https://travis-ci.org/vmware/harbor)
-[![Coverage Status](https://coveralls.io/repos/github/vmware/harbor/badge.svg?branch=master)](https://coveralls.io/github/vmware/harbor?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/vmware/harbor/badge.svg?branch=dev)](https://coveralls.io/github/vmware/harbor?branch=dev)
 
 <img alt="Harbor" src="docs/img/harbor_logo.png">
 
@@ -73,6 +73,13 @@ We welcome contributions from the community. If you wish to contribute code and 
 
 ### License
 Harbor is available under the [Apache 2 license](LICENSE).
+
+This project uses open source components which have additional licensing terms.  The official docker images and licensing terms for these open source components can be found at the following locations:
+
+* Photon OS 1.0: [docker image](https://hub.docker.com/_/photon/), [license](https://github.com/vmware/photon/blob/master/COPYING)
+* Docker Registry 2.5: [docker image](https://hub.docker.com/_/registry/), [license](https://github.com/docker/distribution/blob/master/LICENSE)
+* MySQL 5.6: [docker image](https://hub.docker.com/_/mysql/), [license](https://github.com/docker-library/mysql/blob/master/LICENSE)
+* NGINX 1.9: [docker image](https://hub.docker.com/_/nginx/), [license](https://github.com/nginxinc/docker-nginx/blob/master/LICENSE)
 
 ### Partners
 <a href="https://www.shurenyun.com/" border="0" target="_blank"><img alt="DataMan" src="docs/img/dataman.png"></a> &nbsp; &nbsp; <a href="http://www.slamtec.com" target="_blank" border="0"><img alt="SlamTec" src="docs/img/slamteclogo.png"></a>

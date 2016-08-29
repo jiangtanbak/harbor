@@ -16,6 +16,7 @@
 package dao
 
 import (
+	"fmt"
 	"os"
 	"testing"
 	"time"
@@ -645,6 +646,17 @@ func TestProjectPermission(t *testing.T) {
 	}
 }
 
+func TestGetTotalOfUserRelevantProjects(t *testing.T) {
+	total, err := GetTotalOfUserRelevantProjects(currentUser.UserID, "")
+	if err != nil {
+		t.Fatalf("failed to get total of user relevant projects: %v", err)
+	}
+
+	if total != 1 {
+		t.Errorf("unexpected total: %d != 1", total)
+	}
+}
+
 func TestGetUserRelevantProjects(t *testing.T) {
 	projects, err := GetUserRelevantProjects(currentUser.UserID, "")
 	if err != nil {
@@ -658,8 +670,19 @@ func TestGetUserRelevantProjects(t *testing.T) {
 	}
 }
 
-func TestGetAllProjects(t *testing.T) {
-	projects, err := GetAllProjects("")
+func TestGetTotalOfProjects(t *testing.T) {
+	total, err := GetTotalOfProjects("")
+	if err != nil {
+		t.Fatalf("failed to get total of projects: %v", err)
+	}
+
+	if total != 2 {
+		t.Errorf("unexpected total: %d != 2", total)
+	}
+}
+
+func TestGetProjects(t *testing.T) {
+	projects, err := GetProjects("")
 	if err != nil {
 		t.Errorf("Error occurred in GetAllProjects: %v", err)
 	}
@@ -672,7 +695,7 @@ func TestGetAllProjects(t *testing.T) {
 }
 
 func TestGetPublicProjects(t *testing.T) {
-	projects, err := GetPublicProjects("")
+	projects, err := GetProjects("", 1)
 	if err != nil {
 		t.Errorf("Error occurred in getProjects: %v", err)
 	}
@@ -1457,4 +1480,37 @@ func TestGetOrmer(t *testing.T) {
 	if o == nil {
 		t.Errorf("Error get ormer.")
 	}
+}
+
+func TestDeleteProject(t *testing.T) {
+	name := "project_for_test"
+	project := models.Project{
+		OwnerID: currentUser.UserID,
+		Name:    name,
+	}
+
+	id, err := AddProject(project)
+	if err != nil {
+		t.Fatalf("failed to add project: %v", err)
+	}
+
+	if err = DeleteProject(id); err != nil {
+		t.Fatalf("failed to delete project: %v", err)
+	}
+
+	p := &models.Project{}
+	if err = GetOrmer().Raw(`select * from project where project_id = ?`, id).
+		QueryRow(p); err != nil {
+		t.Fatalf("failed to get project: %v", err)
+	}
+
+	if p.Deleted != 1 {
+		t.Errorf("unexpeced deleted column: %d != %d", p.Deleted, 1)
+	}
+
+	deletedName := fmt.Sprintf("%s#%d", name, id)
+	if p.Name != deletedName {
+		t.Errorf("unexpected name: %s != %s", p.Name, deletedName)
+	}
+
 }
